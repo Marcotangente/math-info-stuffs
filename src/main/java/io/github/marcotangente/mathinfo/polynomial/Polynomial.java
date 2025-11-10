@@ -152,7 +152,6 @@ public class Polynomial{
 
     // search horner composition
     public Polynomial composition(Polynomial p) {
-        // needs pow
         Polynomial res = new Polynomial();
         for (int i = 0; i <= this.degree(); i++)
             res = res.add(p.pow(i).mult(this.get(i)));
@@ -166,5 +165,4 @@ public class Polynomial{
             res = res.mult(this);
         return res;
     }
-
 }
