@@ -161,10 +161,8 @@ public class Polynomial{
 
     // search exponentiation par carrés (ou rapide)
     public Polynomial pow(int power) {
-        if (power <= 0)
-            return new Polynomial(1);
-        Polynomial res = new Polynomial(this.coeffs);
-        for (int i = 1; i < power; i++)
+        Polynomial res = new Polynomial(1);
+        for (int i = 0; i < power; i++)
             res = res.mult(this);
         return res;
     }
