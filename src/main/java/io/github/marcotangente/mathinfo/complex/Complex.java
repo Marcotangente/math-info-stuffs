@@ -78,7 +78,7 @@ public class Complex {
 
     public Complex inverse() {
         if (this.equalsTo(0))
-            throw new ArithmeticException("ComplexNumber division by zero");
+            throw new ArithmeticException("Complex division by zero");
         double real = re / (re*re + im*im);
         double img = - im / (re*re + im*im);
         return new Complex(real, img);

@@ -121,6 +121,16 @@ public class Polynomial{
         return res;
     }
 
+    public Polynomial sub(Polynomial p) {
+        int greaterDegree = Math.max(this.degree(), p.degree());
+
+        Polynomial res = new Polynomial();
+        for (int i = 0; i <= greaterDegree; i++)
+            res.set(this.get(i).sub(p.get(i)), i);
+
+        return res;
+    }
+
     public Polynomial mult(Polynomial p) {
         if (p.isEqualTo(0) || this.isEqualTo(0))
             return new Polynomial();
@@ -148,21 +158,5 @@ public class Polynomial{
 
     public Polynomial mult(double real) {
         return this.mult(new Complex(real));
-    }
-
-    // search horner composition
-    public Polynomial composition(Polynomial p) {
-        Polynomial res = new Polynomial();
-        for (int i = 0; i <= this.degree(); i++)
-            res = res.add(p.pow(i).mult(this.get(i)));
-        return res;
-    }
-
-    // search exponentiation par carrés (ou rapide)
-    public Polynomial pow(int power) {
-        Polynomial res = new Polynomial(1);
-        for (int i = 0; i < power; i++)
-            res = res.mult(this);
-        return res;
     }
 }
