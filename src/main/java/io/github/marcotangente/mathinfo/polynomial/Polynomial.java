@@ -3,11 +3,12 @@ package io.github.marcotangente.mathinfo.polynomial;
 import io.github.marcotangente.mathinfo.complex.Complex;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 
 public class Polynomial{
-    private List<Complex> coeffs;
+    private final List<Complex> coeffs;
 
     public Polynomial() {
         this.coeffs = new ArrayList<>();
@@ -21,8 +22,7 @@ public class Polynomial{
 
     public Polynomial(Complex... coeffs) {
         this.coeffs = new ArrayList<>();
-        for (Complex coeff : coeffs)
-            this.coeffs.add(coeff);
+        Collections.addAll(this.coeffs, coeffs);
         this.trimTrailingZeros();
     }
 
@@ -67,7 +67,7 @@ public class Polynomial{
     }
 
     public boolean isEqualTo(Complex complex) {
-        return this.degree() < 1 ? complex.equalsTo(this.get(0)) : false;
+        return this.degree() < 1 && complex.equalsTo(this.get(0));
     }
 
     public boolean isEqualTo(Polynomial p) {
@@ -149,4 +149,24 @@ public class Polynomial{
     public Polynomial mult(double real) {
         return this.mult(new Complex(real));
     }
+
+    // search horner composition
+    public Polynomial composition(Polynomial p) {
+        // needs pow
+        Polynomial res = new Polynomial();
+        for (int i = 0; i <= this.degree(); i++)
+            res = res.add(p.pow(i).mult(this.get(i)));
+        return res;
+    }
+
+    // search exponentiation par carrés (ou rapide)
+    public Polynomial pow(int power) {
+        if (power <= 0)
+            return new Polynomial(1);
+        Polynomial res = new Polynomial(this.coeffs);
+        for (int i = 1; i < power; i++)
+            res = res.mult(this);
+        return res;
+    }
+
 }
