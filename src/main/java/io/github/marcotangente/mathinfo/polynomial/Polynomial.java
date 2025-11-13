@@ -173,4 +173,18 @@ public class Polynomial{
     public Polynomial mult(double real) {
         return this.mult(new Complex(real));
     }
+
+    public Complex evaluate(Complex z) {
+        Complex res = Complex.ZERO;
+        for (int i = 0; i <= this.degree(); i++)
+            res = res.add(z.pow(i).mult(this.get(i)));
+        return res;
+    }
+
+    public Polynomial derivate() {
+        Polynomial d = new Polynomial();
+        for (int i = 1; i <= this.degree(); i++)
+            d.set(this.get(i).mult(i), i - 1);
+        return d;
+    }
 }
