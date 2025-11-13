@@ -4,10 +4,16 @@ import io.github.marcotangente.mathinfo.complex.Complex;
 
 public class MainPoly {
     public static void main(String[] args) {
-        Polynomial p = new Polynomial(new Complex(-1), new Complex(1,1), Complex.ZERO, Complex.IMAGINARY_UNIT, Complex.ZERO, Complex.ONE);
-        Polynomial d = new Polynomial(1, 0, -2, 2);
-        PolynomialCalculator.EuclideanDivisionResult res = PolynomialCalculator.euclideanDivision(p, d);
-        System.out.println("q = " + res.q().toString());
-        System.out.println("r = " + res.r().toString());
+        Polynomial p = new Polynomial(1,1,1,1);
+        Polynomial d = new Polynomial(-2,-1,1);
+        PolynomialCalculator.ExtendedEuclideanAlgorithmResult res = PolynomialCalculator.extendedEuclideanAlgorithm(p,d);
+        System.out.println(res.pgcd());
+        System.out.println(res.u());
+        System.out.println(res.v());
+
+        Polynomial up = p.mult(res.u());
+        Polynomial vq = d.mult(res.v());
+        Polynomial pgcd = up.add(vq);
+        System.out.println(pgcd);
     }
 }

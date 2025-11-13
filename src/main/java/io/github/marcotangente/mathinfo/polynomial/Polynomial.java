@@ -49,16 +49,30 @@ public class Polynomial{
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        for (int i = coeffs.size() - 1; i >= 0; i--) {
-            if (coeffs.get(i).equalsTo(0))
-                continue;
-            sb.append("(").append(coeffs.get(i)).append(")x^").append(i);
-            if (i > 0)
-                sb.append(" + ");
+        List<Integer> degrees = new ArrayList<>();
+        List<Complex> nonZeroCoefficient = new ArrayList<>();
+        for (int i = 0; i <= this.degree(); i++) {
+            Complex coeff = this.coeffs.get(i);
+            if (!coeff.equalsTo(0)) {
+                degrees.addLast(i);
+                nonZeroCoefficient.addLast(coeff);
+            }
         }
-        if (sb.isEmpty())
-            sb.append(0);
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = nonZeroCoefficient.size() - 1; i > 0; i--) {
+            Complex coeff = nonZeroCoefficient.get(i);
+            if (!coeff.equalsTo(1))
+                sb.append("(").append(coeff).append(")");
+            sb.append("x");
+            if (degrees.get(i) != 1)
+                sb.append("^").append(degrees.get(i));
+            sb.append(" + ");
+        }
+        if (degrees.getFirst() != 0)
+            sb.append("(").append(nonZeroCoefficient.getFirst()).append(")x^").append(degrees.getFirst());
+        else
+            sb.append(nonZeroCoefficient.getFirst());
         return sb.toString();
     }
 

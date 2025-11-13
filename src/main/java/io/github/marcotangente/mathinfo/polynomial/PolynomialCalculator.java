@@ -6,6 +6,7 @@ public class PolynomialCalculator {
     private PolynomialCalculator() {}
 
     public record EuclideanDivisionResult(Polynomial q, Polynomial r) {}
+    public record ExtendedEuclideanAlgorithmResult(Polynomial pgcd, Polynomial u, Polynomial v) {}
 
     //TODO search horner composition
     public static Polynomial composition(Polynomial p, Polynomial q) {
@@ -42,18 +43,52 @@ public class PolynomialCalculator {
 
     //TODO solve q,r whith system (slide 29)
 
-    public static Polynomial pgcd(Polynomial p, Polynomial q) {
-        Polynomial biggest = p;
-        Polynomial smallest = q;
-        if (p.degree() < q.degree()) {
-            biggest = q;
-            smallest = p;
+    private static Polynomial euclideanAlgorithm(Polynomial p, Polynomial q) {
+        Polynomial a = p;
+        Polynomial b = q;
+        while (!b.isEqualTo(0)) {
+            Polynomial t = b;
+            b = euclideanDivision(a, b).r();
+            a = t;
         }
-
-        Polynomial pol = biggest;
-        Polynomial lastR = smallest;
-        while (!lastR.isEqualTo(0)) {
-
-        }
+        return a;
     }
+
+    public static Polynomial pgcd(Polynomial p, Polynomial q, boolean makeMonic) {
+        Polynomial res = euclideanAlgorithm(p, q);
+        if (makeMonic) {
+            Complex factor = Complex.ONE.divide(res.get(res.degree()));
+            res = res.mult(factor);
+        }
+        return res;
+    }
+
+    public static ExtendedEuclideanAlgorithmResult extendedEuclideanAlgorithm(Polynomial p, Polynomial q) {
+        Polynomial r = p;
+        Polynomial u = new Polynomial(1);
+        Polynomial v = new Polynomial(0);
+        Polynomial r_ = q;
+        Polynomial u_ = new Polynomial(0);
+        Polynomial v_ = new Polynomial(1);
+
+        while (!r_.isEqualTo(0)) {
+            // r = r' * a + r'' <==> r'' = r - r' * a = (up + vq) - (u'p + v'q) * a = (u - au')p + (v - av')q
+            // r <- r'
+            // r' <- r''
+            EuclideanDivisionResult euclideanDivisionRes = euclideanDivision(r, r_);
+            Polynomial a = euclideanDivisionRes.q();
+            Polynomial newU = u.sub(u_.mult(a));
+            Polynomial newV = v.sub(v_.mult(a));
+
+            r = r_;
+            r_ = euclideanDivisionRes.r();
+            u = u_;
+            u_ = newU;
+            v = v_;
+            v_ = newV;
+        }
+
+        return new ExtendedEuclideanAlgorithmResult(r, u, v);
+    }
+
 }

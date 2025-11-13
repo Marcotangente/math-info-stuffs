@@ -26,10 +26,10 @@ public class Complex {
         if (this.equalsTo(IMAGINARY_UNIT))
             return "i";
         if (Math.abs(im) < EPSILON)
-            return String.format("%f", re);
+            return String.format("%g", re);
         if (Math.abs(re) < EPSILON)
-            return String.format("%fi", im);
-        return String.format("%f %s %fi", re, im >= 0 ? "+" : "-", Math.abs(im));
+            return String.format("%gi", im);
+        return String.format("%g %s %gi", re, im >= 0 ? "+" : "-", Math.abs(im));
     }
 
     public boolean equalsTo(double n) {
