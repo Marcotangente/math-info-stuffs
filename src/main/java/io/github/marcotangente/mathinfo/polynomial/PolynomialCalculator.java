@@ -91,4 +91,23 @@ public class PolynomialCalculator {
         return new ExtendedEuclideanAlgorithmResult(r, u, v);
     }
 
+    public static Polynomial derivate(Polynomial p, int n) {
+        Polynomial res = p;
+        for (int i = 0; i < n; i++)
+            res = res.derivate();
+        return res;
+    }
+
+    public static boolean isZeroOfPol(Complex z, Polynomial p) {
+        return p.evaluate(z).equalsTo(Complex.ZERO);
+    }
+
+    public static int multiplicityOfZero(Complex z, Polynomial p) {
+        int res = 0;
+        while (isZeroOfPol(z, p)) {
+            res++;
+            p = p.derivate();
+        }
+        return res;
+    }
 }
